@@ -11,8 +11,8 @@ import (
 )
 
 func main() {
-	//publisher, err := createHttpPublisher()
-	publisher, err := createCliPublisher()
+	publisher, err := createHttpPublisher()
+	//publisher, err := createCliPublisher()
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -22,7 +22,7 @@ func main() {
 
 func runScanner(publisher *publishing.Publisher) {
 	for {
-		arpAddresses := ArpGetLocalAddresses()
+		arpAddresses := PingAddresses()
 		created, deleted := GetDifference(arpAddresses)
 		createdDns := make([]models.DnsAddress, len(*created))
 		deletedDns := make([]models.DnsAddress, len(*deleted))
@@ -41,7 +41,7 @@ func runScanner(publisher *publishing.Publisher) {
 		}
 
 		(*publisher).Publish(&scanResult)
-		time.Sleep(30 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
 
@@ -50,7 +50,6 @@ func getDns(address string) *models.DnsAddress {
 	dns := models.DnsAddress{}
 	dns.Address = address
 	if err != nil {
-		fmt.Printf("Error resolving DNS: %s", err)
 		dns.Name = ""
 	} else {
 		dns.Name = strings.Join(name, ",")

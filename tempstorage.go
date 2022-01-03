@@ -12,7 +12,7 @@ func GetDifference(scannedAddresses *[]string) (*[]string, *[]string) {
 				found = true
 			}
 		}
-		if found {
+		if !found {
 			newlyCreatedAddresses = append(newlyCreatedAddresses, addr)
 		}
 	}
@@ -24,7 +24,7 @@ func GetDifference(scannedAddresses *[]string) (*[]string, *[]string) {
 				found = true
 			}
 		}
-		if found {
+		if !found {
 			newlyDeletedAddresses = append(newlyDeletedAddresses, storedAddress)
 		}
 	}
