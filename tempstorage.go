@@ -29,5 +29,7 @@ func GetDifference(scannedAddresses *[]string) (*[]string, *[]string) {
 		}
 	}
 
+	storedAddresses = *scannedAddresses
+
 	return &newlyCreatedAddresses, &newlyDeletedAddresses
 }
