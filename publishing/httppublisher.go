@@ -35,7 +35,7 @@ func (publisher *HttpApiPublisher) SetApiEndpoint(url string) {
 }
 
 func (publisher *HttpApiPublisher) GetEndpoint() string {
-	return fmt.Sprintf("%s/network/difference", publisher.ApiEndpoint)
+	return fmt.Sprintf("%s/api/network/difference", publisher.ApiEndpoint)
 }
 
 func CreateHttpPublisher(url string) Publisher {

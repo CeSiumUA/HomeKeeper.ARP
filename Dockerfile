@@ -1,4 +1,5 @@
 FROM golang:alpine
+ARG apiname=homekeeperapi
 
 WORKDIR /app
 
@@ -10,4 +11,4 @@ COPY . ./
 
 RUN go build -o /hkarp
 
-CMD [ "/hkarp" ]
+CMD [ "/hkarp", apiname ]
