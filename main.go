@@ -5,10 +5,11 @@ import (
 	"homekeeperarp/models"
 	"net"
 	"strings"
+	"time"
 )
 
 func main() {
-
+	runScanner()
 }
 
 func runScanner() {
@@ -32,6 +33,7 @@ func runScanner() {
 		}
 
 		publishToApi(&scanResult)
+		time.Sleep(30 * time.Second)
 	}
 }
 
