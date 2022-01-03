@@ -60,7 +60,7 @@ func getDns(address string) *models.DnsAddress {
 func createHttpPublisher() (*publishing.Publisher, error) {
 	arguments := os.Args
 	if len(arguments) == 1 {
-		return nil, fmt.Errorf("Api endpoint not specified!")
+		return nil, fmt.Errorf("api endpoint not specified")
 	}
 	clearArguments := arguments[1:]
 	publisher := publishing.CreateHttpPublisher(clearArguments[0])
