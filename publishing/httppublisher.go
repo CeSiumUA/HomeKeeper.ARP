@@ -15,7 +15,7 @@ type HttpApiPublisher struct {
 
 func (publisher *HttpApiPublisher) Publish(scanResult *models.ScanResult) error {
 	if publisher.ApiEndpoint == "" {
-		return errors.New("Empty API endpoint!")
+		return errors.New("empty API endpoint")
 	}
 	client := http.Client{}
 	buff := bytes.NewBuffer(make([]byte, 0))

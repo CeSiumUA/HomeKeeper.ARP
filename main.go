@@ -3,16 +3,24 @@ package main
 import (
 	"fmt"
 	"homekeeperarp/models"
+	"homekeeperarp/publishing"
 	"net"
+	"os"
 	"strings"
 	"time"
 )
 
 func main() {
-	runScanner()
+	//publisher, err := createHttpPublisher()
+	publisher, err := createCliPublisher()
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	runScanner(publisher)
 }
 
-func runScanner() {
+func runScanner(publisher *publishing.Publisher) {
 	for {
 		arpAddresses := ArpGetLocalAddresses()
 		created, deleted := GetDifference(arpAddresses)
@@ -32,7 +40,7 @@ func runScanner() {
 			Deleted: deletedDns,
 		}
 
-		publishToApi(&scanResult)
+		(*publisher).Publish(&scanResult)
 		time.Sleep(30 * time.Second)
 	}
 }
@@ -50,6 +58,17 @@ func getDns(address string) *models.DnsAddress {
 	return &dns
 }
 
-func publishToApi(scanResult *models.ScanResult) {
+func createHttpPublisher() (*publishing.Publisher, error) {
+	arguments := os.Args
+	if len(arguments) == 1 {
+		return nil, fmt.Errorf("Api endpoint not specified!")
+	}
+	clearArguments := arguments[1:]
+	publisher := publishing.CreateHttpPublisher(clearArguments[0])
+	return &publisher, nil
+}
 
+func createCliPublisher() (*publishing.Publisher, error) {
+	publisher := publishing.CreateCliPublisher()
+	return &publisher, nil
 }
