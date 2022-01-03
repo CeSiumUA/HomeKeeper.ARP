@@ -9,11 +9,11 @@ type CliPublisher struct {
 }
 
 func (publicher *CliPublisher) Publish(scanResult *models.ScanResult) error {
-	fmt.Printf("Added: ")
+	fmt.Println("Added: ")
 	for _, addr := range scanResult.Added {
 		fmt.Printf("\t%s", addr)
 	}
-	fmt.Printf("Deleted: ")
+	fmt.Println("Deleted: ")
 	for _, addr := range scanResult.Deleted {
 		fmt.Printf("\t%s", addr)
 	}
