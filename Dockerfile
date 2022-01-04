@@ -11,4 +11,4 @@ COPY . ./
 
 RUN go build -o /hkarp
 
-CMD [ "/hkarp", apiname ]
+CMD [ "/hkarp", "-u", apiname ]
