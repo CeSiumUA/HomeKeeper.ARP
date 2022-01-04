@@ -1,22 +1,17 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"homekeeperarp/models"
 	"homekeeperarp/publishing"
 	"net"
-	"os"
 	"strings"
 	"time"
 )
 
 func main() {
-	publisher, err := createHttpPublisher()
-	//publisher, err := createCliPublisher()
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	publisher := createPublisher()
 	runScanner(publisher)
 }
 
@@ -57,13 +52,28 @@ func getDns(address string) *models.DnsAddress {
 	return &dns
 }
 
+func createPublisher() *publishing.Publisher {
+	publisherVariant := flag.String("p", "cli", "cli - to set command line as output, http for http server sending")
+	if *publisherVariant == "http" {
+		publisher, err := createHttpPublisher()
+		if err != nil {
+			fmt.Println(err)
+			publisher, _ = createCliPublisher()
+		}
+		return publisher
+
+	} else {
+		publisher, _ := createCliPublisher()
+		return publisher
+	}
+}
+
 func createHttpPublisher() (*publishing.Publisher, error) {
-	arguments := os.Args
-	if len(arguments) == 1 {
+	httpUrl := flag.String("u", "", "enter endpoint api url")
+	if *httpUrl == "" {
 		return nil, fmt.Errorf("api endpoint not specified")
 	}
-	clearArguments := arguments[1:]
-	publisher := publishing.CreateHttpPublisher(clearArguments[0])
+	publisher := publishing.CreateHttpPublisher(*httpUrl)
 	return &publisher, nil
 }
 
