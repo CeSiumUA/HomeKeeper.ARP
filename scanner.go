@@ -19,7 +19,7 @@ func ArpGetLocalAddresses() *[]string {
 
 func PingAddresses() *[]string {
 	baseAddress := "192.168.0."
-	baseNumber := 1
+	baseNumber := 2
 	pinger := fastping.NewPinger()
 	defer pinger.Stop()
 	for {
