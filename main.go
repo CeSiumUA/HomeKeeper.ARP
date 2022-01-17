@@ -19,15 +19,21 @@ func runScanner(publisher *publishing.Publisher) {
 	for {
 		arpAddresses := PingAddresses()
 		created, deleted := GetDifference(arpAddresses)
-		createdDns := make([]models.DnsAddress, len(*created))
-		deletedDns := make([]models.DnsAddress, len(*deleted))
+		createdDns := make([]models.DnsAddress, 0)
+		deletedDns := make([]models.DnsAddress, 0)
 
-		for index, address := range *created {
-			createdDns[index] = *(getDns(address))
+		for _, address := range *created {
+			nameAddress := getDns(address)
+			if nameAddress.Name != "" {
+				createdDns = append(createdDns, *nameAddress)
+			}
 		}
 
-		for index, address := range *deleted {
-			deletedDns[index] = *(getDns(address))
+		for _, address := range *deleted {
+			nameAddress := getDns(address)
+			if nameAddress.Name != "" {
+				deletedDns = append(deletedDns, *nameAddress)
+			}
 		}
 
 		scanResult := models.ScanResult{
